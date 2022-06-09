@@ -46,7 +46,7 @@ export class CurrencyExchangeWidgetComponent implements OnInit {
     this.reactiveForm = this.formBuilder.group({
       sendCurrency: ['USD'],
       receiveCurrency: ['EUR'],
-      sendAmount: [''],
+      sendAmount: [null],
       receiveAmount: [{ value: null, disabled: true }],
     });
     this.currencyExchangeWidgetService.getExchangeRate().subscribe((rate) => {
