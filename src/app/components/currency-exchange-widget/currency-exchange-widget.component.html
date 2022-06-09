@@ -1,0 +1,44 @@
+<div [formGroup]="reactiveForm" class="currency-exchange-widget">
+  <div>
+    <div class="flex">
+      <app-currency-selector [currentAmount]="currentAmountDisplay" [currency]="reactiveForm.get('sendCurrency')"></app-currency-selector>
+      <div class="input-container">
+        <mat-form-field class="money-input" appearance="outline">
+          <mat-label>You send</mat-label>
+          <input type="number" formControlName="sendAmount" matInput>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="background">
+    <div class="notice-container">
+      <div class="notice-line">
+        <img class="notice-icon" [src]="
+          './assets/images/' +
+          'Fee_Icon' +
+          '.svg'
+        " />
+        {{ exchangeFee | number: '1.0-2' }} {{ reactiveForm.get('sendCurrency')?.value }} fees
+      </div>
+      <div class="notice-line" *ngIf="exchangeRate">
+        <img class="notice-icon" [src]="
+          './assets/images/' +
+          'Export_Icon' +
+          '.svg'
+        " />
+        {{ exchangeRate[receiveCurrency] }} {{ receiveCurrency }} exchange rate
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="flex">
+      <app-currency-selector [currency]="reactiveForm.get('receiveCurrency')"></app-currency-selector>
+      <div class="input-container">
+        <mat-form-field class="money-input" appearance="outline">
+          <mat-label>Recipient gets</mat-label>
+          <input type="number" formControlName="receiveAmount" matInput>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

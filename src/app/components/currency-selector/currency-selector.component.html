@@ -1,0 +1,42 @@
+<div class="currency-selector" (click)="onToggleColorSelector()">
+  <div class="flex flex-grow centered">
+    <div class="flag-container">
+      <img class="flag-img" [src]="
+          './assets/images/' +
+          currency?.value + '_Balance' +
+          '.svg'
+        " />
+      <div class="flag-name">{{ currency?.value}}</div>
+    </div>
+    <div *ngIf="currentAmount" class="current-amount-container">
+      <div class="current-amount">
+        {{ currentAmount | number: '1.0-2' }}
+      </div>
+      <div class="current-amount-desc">
+        Available
+      </div>
+    </div>
+  </div>
+  <div class="dropdown-container" cdk-overlay-origin #origin="cdkOverlayOrigin" >
+    <mat-icon aria-hidden="false" aria-label="Example home icon">keyboard_arrow_down</mat-icon>
+  </div>
+</div>
+
+<ng-template
+  cdk-connected-overlay
+  cdkConnectedOverlayLockPosition
+  cdkConnectedOverlayHasBackdrop
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayWidth]="contentWidth"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="showing$ | async"
+  [cdkConnectedOverlayPositions]="positions"
+  (backdropClick)="close()"
+  (attach)="onAttached()"
+  (detach)="close()"
+>
+  <app-currency-selector-panel
+    class="width_100"
+    (currencyChanged)="setActiveCurrency($event)"
+  ></app-currency-selector-panel>
+</ng-template>

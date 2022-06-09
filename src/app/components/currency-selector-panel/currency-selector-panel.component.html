@@ -1,0 +1,11 @@
+<div class="container">
+  <div *ngFor="let currency of currencyList" class="option" (click)="currencyChange(currency)"
+    [class.option-active]="currentCurrency === currency">
+    <img class="flag-img" [src]="
+          './assets/images/' +
+          currency + '_Balance' +
+          '.svg'
+        " />
+    <div class="flag-name">{{currency}}</div>
+  </div>
+</div>

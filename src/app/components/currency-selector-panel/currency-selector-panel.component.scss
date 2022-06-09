@@ -1,0 +1,28 @@
+:host {
+  background: white;
+}
+
+.container {
+  box-shadow: 0px 3px 7px #d7d9de;
+}
+
+.option {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.option:hover,
+.option-active {
+  background-color: #ddd;
+}
+
+
+.flag-img {
+  margin-right: 10px;
+}

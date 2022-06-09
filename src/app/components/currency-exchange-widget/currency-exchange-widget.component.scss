@@ -1,0 +1,106 @@
+.currency-exchange-widget {
+  font-size: 16px;
+  position: relative;
+  display: flex;
+  height: 362px;
+  justify-content: space-between;
+  flex-direction: column;
+
+  .background {
+    background: #edf6ff;
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    z-index: -1;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    display: flex;
+    align-items: center;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      height: 90%;
+      left: 20.25px;
+      z-index: -1;
+      border-left: 1px dashed #234afb;
+    }
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  // Override material styles
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 12px 0 12px 0;
+    border-top: 7.5px solid transparent;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #2e3a42;
+  }
+
+  .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-label {
+    color: #2e3a42;
+  }
+
+  .mat-input-element:disabled {
+    color: #2e3a42;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-form-field-label {
+    font-family: "Rubik";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    color: #2e3a42;
+  }
+
+  .input-container {
+    width: 307px;
+    height: 104px;
+    background: #ffffff;
+    box-shadow: 0px 3px 7px #d7d9de;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .money-input {
+      width: 256px;
+    }
+  }
+
+  .notice-line {
+    padding-left: 11px;
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .notice-icon {
+    margin-right: 30px;
+  }
+
+  .notice-container {
+    transform: translate(0, -10px);
+  }
+}
+
+.spinner {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
