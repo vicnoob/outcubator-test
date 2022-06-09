@@ -6,6 +6,19 @@
   justify-content: space-between;
   flex-direction: column;
 
+  @media only screen and (max-width: 600px) {
+    height: 700px;
+  }
+
+  .container {
+    display: flex;
+
+    @media only screen and (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+
+
   .background {
     background: #edf6ff;
     position: absolute;
@@ -13,7 +26,7 @@
     height: 100%;
     z-index: -1;
     left: 50%;
-    transform: translate(-50%, 20px);
+    transform: translate(-50%, 10px);
     display: flex;
     align-items: center;
 
@@ -89,10 +102,6 @@
 
   .notice-icon {
     margin-right: 30px;
-  }
-
-  .notice-container {
-    transform: translate(0, -10px);
   }
 }
 

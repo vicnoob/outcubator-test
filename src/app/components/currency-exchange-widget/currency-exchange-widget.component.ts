@@ -70,13 +70,15 @@ export class CurrencyExchangeWidgetComponent implements OnInit {
   }
 
   private setSendAmountValidator(): void {
-    this.reactiveForm.get('sendAmount').setValidators(Validators.max(this.currentAmountDisplay));
+    this.reactiveForm
+      .get('sendAmount')
+      .setValidators(Validators.max(this.currentAmountDisplay));
   }
 
   public get receiveAmount(): number {
     const toUsd = this.sendAmount / this.exchangeRate[this.sendCurrency] || 0;
     const feeToUsd = this.exchangeFee / this.exchangeRate[this.sendCurrency];
-    return (toUsd- feeToUsd) * this.exchangeRate[this.receiveCurrency];
+    return (toUsd - feeToUsd) * this.exchangeRate[this.receiveCurrency];
   }
 
   public get receiveCurrency(): string {

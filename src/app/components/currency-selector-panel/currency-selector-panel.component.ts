@@ -17,7 +17,7 @@ export class CurrencySelectorPanelComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  currencyChange(currency: string) {
+  public currencyChange(currency: string): void {
     this.currencyChanged.emit(currency);
   }
 }

@@ -19,7 +19,12 @@
   border-radius: 5px 0 0 5px;
   padding: 26px 15px 22px 26px;
   font-family: "Montserrat", sans-serif;
-  margin-right: 8px;
+  margin-bottom: 8px;
+
+  @media only screen and (min-width: 600px) {
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
 
   .flag-img {
     width: 38px;
@@ -59,5 +64,6 @@
   .dropdown-container {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 }

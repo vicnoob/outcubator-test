@@ -1,4 +1,4 @@
-<div class="currency-selector" (click)="onToggleColorSelector()">
+<div class="currency-selector">
   <div class="flex flex-grow centered">
     <div class="flag-container">
       <img class="flag-img" [src]="
@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="dropdown-container" cdk-overlay-origin #origin="cdkOverlayOrigin" >
+  <div cdk-overlay-origin #origin="cdkOverlayOrigin" class="dropdown-container"  (click)="onToggleColorSelector()">
     <mat-icon aria-hidden="false" aria-label="Example home icon">keyboard_arrow_down</mat-icon>
   </div>
 </div>
@@ -27,16 +27,14 @@
   cdkConnectedOverlayLockPosition
   cdkConnectedOverlayHasBackdrop
   cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-  [cdkConnectedOverlayWidth]="contentWidth"
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayOpen]="showing$ | async"
-  [cdkConnectedOverlayPositions]="positions"
   (backdropClick)="close()"
   (attach)="onAttached()"
   (detach)="close()"
 >
   <app-currency-selector-panel
-    class="width_100"
+    [currentCurrency]="currency?.value"
     (currencyChanged)="setActiveCurrency($event)"
   ></app-currency-selector-panel>
 </ng-template>
