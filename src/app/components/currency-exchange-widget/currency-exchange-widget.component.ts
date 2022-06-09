@@ -5,9 +5,12 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ViewEncapsulation,
+  OnDestroy,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSpinner } from '@angular/material/progress-spinner';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CurrencyExchangeWidgetService } from './currency-exchange-widget.service';
 
 @Component({
@@ -17,14 +20,14 @@ import { CurrencyExchangeWidgetService } from './currency-exchange-widget.servic
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class CurrencyExchangeWidgetComponent implements OnInit {
+export class CurrencyExchangeWidgetComponent implements OnInit, OnDestroy {
   currentAmount = 5641.43;
   currentAmountDisplay: number;
   reactiveForm: FormGroup;
   exchangeRate: {
     [key: string]: number;
   };
-  spinner = this.overlay.create({
+  private spinner = this.overlay.create({
     hasBackdrop: true,
     positionStrategy: this.overlay
       .position()
@@ -32,6 +35,7 @@ export class CurrencyExchangeWidgetComponent implements OnInit {
       .centerHorizontally()
       .centerVertically(),
   });
+  protected destroy$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,24 +53,49 @@ export class CurrencyExchangeWidgetComponent implements OnInit {
       sendAmount: [null],
       receiveAmount: [{ value: null, disabled: true }],
     });
-    this.currencyExchangeWidgetService.getExchangeRate().subscribe((rate) => {
-      this.exchangeRate = rate;
-      this.currentAmountDisplay =
-        this.currentAmount *
-        this.exchangeRate[this.reactiveForm.get('sendCurrency')?.value];
-      this.setSendAmountValidator();
-      this.spinner.detach();
-    });
 
-    this.reactiveForm.get('sendCurrency').valueChanges.subscribe((val) => {
-      this.currentAmountDisplay = this.currentAmount * this.exchangeRate[val];
-      this.setSendAmountValidator();
-      this.reactiveForm.get('sendAmount').patchValue(null);
-    });
+    this.initSubscription();
+  }
 
-    this.reactiveForm.get('sendAmount').valueChanges.subscribe(() => {
-      this.reactiveForm.get('receiveAmount').patchValue(this.receiveAmount);
-    });
+  private initSubscription(): void {
+    this.currencyExchangeWidgetService
+      .getExchangeRate()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((rate) => {
+        this.exchangeRate = rate;
+        this.currentAmountDisplay =
+          this.currentAmount *
+          this.exchangeRate[this.reactiveForm.get('sendCurrency')?.value];
+        this.setSendAmountValidator();
+        this.spinner.detach();
+      });
+
+    this.reactiveForm
+      .get('sendCurrency')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.currentAmountDisplay = this.currentAmount * this.exchangeRate[val];
+        this.setSendAmountValidator();
+        this.reactiveForm.get('sendAmount').patchValue(null);
+      });
+
+    this.reactiveForm
+      .get('receiveCurrency')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.reactiveForm.get('receiveAmount').patchValue(this.receiveAmount);
+      });
+
+    this.reactiveForm
+      .get('sendAmount')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.sendAmount > this.currentAmountDisplay) {
+          this.reactiveForm.get('receiveAmount').patchValue(null);
+          return;
+        }
+        this.reactiveForm.get('receiveAmount').patchValue(this.receiveAmount);
+      });
   }
 
   private setSendAmountValidator(): void {
@@ -107,5 +136,10 @@ export class CurrencyExchangeWidgetComponent implements OnInit {
       fee = 1.1;
     }
     return (this.sendAmount * fee) / 100;
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
